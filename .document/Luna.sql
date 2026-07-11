@@ -1,89 +1,21 @@
-# Projet - Bot discord
+-- phpMyAdmin SQL Dump
+-- version 5.2.2deb1+deb13u1
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : localhost:3306
+-- Généré le : sam. 11 juil. 2026 à 23:05
+-- Version du serveur : 11.8.3-MariaDB-0+deb13u1 from Debian
+-- Version de PHP : 8.4.16
 
-Luna est un bot Discord qui était fait en Python et qui a été refait en JavaScript.
-
-[lien d'installation discord](https://discord.com/oauth2/authorize?client_id=1438539563487465532)
-
-## Prérequis
-
-- **Node.js**
-- **npm**
-- **Compte Discord**
-- **Clé API Groq**
-
-## Installation
-
-### 1. Cloner le projet
-```bash
-git clone https://github.com/Tiago-170/Luna.git
-cd Luna/.bot/app
-```
-
-### 2. Installer les dépendances
-```bash
-npm install discord.js, dotenv, groq, mysql2, groq-sdk
-```
-
-### 3. Configurer les variables d'environnement
-
-Créez un fichier `.env` à la racine du projet :
-
-```env
-# Token Discord du bot
-TOKEN=
-
-# Clés API Groq
-GROK_API_1=
-
-# Configuration de la base de données
-DB_HOST=
-DB_USERNAME=
-DB_PASSWORD=
-DB_NAME=
-```
-
-### 4. Lancer le bot
-
-```bash
-npm start
-# ou
-node index.js
-```
-
-## Architecture du projet
-
-Ce projet utilise une **architecture MVC modifiée** en JavaScript pour correspondre aux besoins spécifiques du bot Discord.
-
-![schéma d'une architecture MVC JavaScript adaptée](./.document/MVC_schema.png)
-
-### Structure des dossiers
-
-```
-├── index.js                   # Point d'entrée
-├── core/                      # Cœur du framework
-│   ├── Client.js              # Configuration Discord.js
-│   ├── Controller.js          # Contrôleur de base
-│   ├── Database.js            # Gestion de la bdd
-│   ├── Model.js               # Modèle de base
-│   └── Router.js              # Routeur d'événements
-├── controllers/               # Contrôleurs de l'app
-├── models/                    # Modèles de données
-├── services/                  # Services métier
-├── events/                    # Gestion d'événements
-│   └── readyEvent.js          # Événement de démarrage
-├── commands/                  # Commandes slash du bot
-└── variable/                  # Variables globales
-    └── system_prompt.js       # Prompt système pour l'IA
-```
-
-## Base de données
-
-![alt text](./.document/BDD_schema.png)
-
-```sql
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de données : `Luna`
@@ -267,4 +199,7 @@ ALTER TABLE `message`
   ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateur` (`utilisateur_id`),
   ADD CONSTRAINT `message_ibfk_2` FOREIGN KEY (`conversation_id`) REFERENCES `conversation` (`conversation_id`);
 COMMIT;
-```
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
