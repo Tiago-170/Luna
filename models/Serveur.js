@@ -1,4 +1,4 @@
-import Model from "../Model.js";
+import Model from "../core/Model.js";
 
 class Serveur extends Model {
 
