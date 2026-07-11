@@ -20,12 +20,12 @@ class Message extends Model {
 
         const db = await this.db();
 
-        const [rows] = await db.execute(
-            `SELECT * FROM ${this.table} WHERE id = ?`,
-            [id]
+        const [result] = await db.execute(
+            `INSERT INTO ${this.table} (id_message, id_user, id_guild, message, is_bot) VALUES (?, ?, ?, ?, ?)`,
+            [id_message, id_user, id_guild, message, is_bot]
         );
 
-        return rows;
+        return result;
     }
 
 }

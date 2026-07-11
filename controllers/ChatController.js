@@ -5,7 +5,7 @@ import IaService from "../services/IaService.js";
 class ChatController extends Controller {
 
     async execute(message) {
-        if (message.mentions.has(message.client.user) || message.content.toLowerCase().includes("luna")) {
+        if (message.mentions.has(message.client.user) || message.content.toLowerCase().includes("luna") || message.channel.name.toLowerCase().includes("luna")) {
             const IA = new IaService();
 
             const author = message.author.username;

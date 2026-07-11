@@ -27,6 +27,16 @@ class Utilisateur extends Model {
         return rows;
     }
 
+    static async syncUser(id, username, icon_url) {
+        const db = await this.db();
+
+        await db.execute(
+            `INSERT INTO ${this.table} (utilisateur_id, pseudo, icon_url) VALUES (?, ?, ?)
+             ON DUPLICATE KEY UPDATE pseudo = VALUES(pseudo), icon_url = VALUES(icon_url)`,
+            [id, username, icon_url]
+        );
+    }
+
 }
 
 export default Utilisateur;

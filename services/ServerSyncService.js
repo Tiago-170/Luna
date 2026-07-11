@@ -1,9 +1,10 @@
-import ServeurModel from "../models/Serveur.js";
-import UtilisateurModel from "../models/Utilisateur.js";
+import ServerSyncController from "../controllers/ServerSyncController.js";
 
 class ServerSyncService {
 
     static async sync(client) {
+
+        const serverSyncController = new ServerSyncController();
 
         console.log("Synchronisation des serveurs...");
 
@@ -11,37 +12,17 @@ class ServerSyncService {
 
             console.log(`Serveur trouvé : ${guild.name}`);
 
-            // Enregistre le serveur
-            await ServeurModel.create({
-                id: guild.id,
-                nom: guild.name,
-                icon: guild.iconURL()
-            });
+            await serverSyncController.syncServer(guild);
 
-
-            // Récupération des membres
             const members = await guild.members.fetch();
 
-
-            // Administrateurs
             const admins = members.filter(member =>
                 member.permissions.has("Administrator")
             );
 
 
             for (const admin of admins.values()) {
-
-                await UtilisateurModel.create({
-                    id: admin.id,
-                    pseudo: admin.user.username,
-                    icon: admin.user.displayAvatarURL()
-                });
-
-
-                await ServeurModel.addAdmin(
-                    guild.id,
-                    admin.id
-                );
+                await serverSyncController.syncAdmin(guild, admin);
 
             }
 

@@ -10,8 +10,15 @@ class Router {
 
         const Controller = this.routes.get(interaction.commandName);
 
-        if (!Controller)
+        if (!Controller) {
+            if (interaction.isRepliable() && !interaction.replied && !interaction.deferred) {
+                await interaction.reply({
+                    content: "Commande inconnue ou non enregistrée.",
+                    ephemeral: true
+                });
+            }
             return;
+        }
 
         const controller = new Controller();
 
