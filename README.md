@@ -153,8 +153,6 @@ CREATE TABLE `serveur` (
   `icon_url` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
 -- Structure de la table `utilisateur`
 --
@@ -177,7 +175,7 @@ CREATE TABLE `utilisateur` (
 ALTER TABLE `administrateur_serveur`
   ADD PRIMARY KEY (`id_administrateur`),
   ADD UNIQUE KEY `id_administrateur` (`id_administrateur`),
-  ADD KEY `administrateur_serveur_ibfk_1` (`serveur_id`),
+  ADD UNIQUE KEY `uq_admin_serveur` (`serveur_id`,`utilisateur_id`),
   ADD KEY `idx_utilisateur_id` (`utilisateur_id`);
 
 --
@@ -223,7 +221,7 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `administrateur_serveur`
 --
 ALTER TABLE `administrateur_serveur`
-  MODIFY `id_administrateur` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_administrateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT pour la table `conversation`
@@ -245,7 +243,8 @@ ALTER TABLE `memoire`
 -- Contraintes pour la table `administrateur_serveur`
 --
 ALTER TABLE `administrateur_serveur`
-  ADD CONSTRAINT `administrateur_serveur_ibfk_1` FOREIGN KEY (`serveur_id`) REFERENCES `serveur` (`serveur_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `administrateur_serveur_ibfk_1` FOREIGN KEY (`serveur_id`) REFERENCES `serveur` (`serveur_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `administrateur_serveur_ibfk_2` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateur` (`utilisateur_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `conversation`

@@ -12,6 +12,7 @@ class ChatController extends Controller {
             const messageContent = message.content;
 
             const iaResponse = await IA.generate_response(messageContent, author);
+            
             return message.reply(iaResponse);
         }
     }
