@@ -16,7 +16,7 @@ class GuildCreateController extends Controller {
             );
 
             for (const admin of admins.values()) {
-				await Utilisateur.syncUser(admin.id, admin.user.username, admin.user.displayAvatarURL());
+				await Utilisateur.addUser(admin.id, admin.user.username, admin.user.displayAvatarURL());
 
                 await Serveur.syncAdmin(guild.id, admin.id);
             }

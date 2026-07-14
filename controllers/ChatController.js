@@ -1,19 +1,61 @@
 import Controller from "../core/Controller.js";
 import 'dotenv/config';
 import IaService from "../services/IaService.js";
+import Message from "../models/Message.js";
+import Memoire from "../models/Memoire.js";
+import { ChannelType } from 'discord.js';
+import Utilisateur from "../models/Utilisateur.js";
+
+const cooldowns = new Map();
+const cooldownsTime = 5000;
 
 class ChatController extends Controller {
 
     async execute(message) {
-        if (message.mentions.has(message.client.user) || message.content.toLowerCase().includes("luna") || message.channel.name.toLowerCase().includes("luna")) {
+        if (message.mentions.has(message.client.user) || message.content.toLowerCase().includes("luna") || message.channel.name.toLowerCase().includes("luna") || message.channel.type === ChannelType.DM) {
+            if (message.content.length > 1000) {
+                return;
+            }
+            const userId = message.author.id;
+
+            await Utilisateur.addUser(message.author.id, message.author.username, message.author.displayAvatarURL());
+
+            const lastMessage = cooldowns.get(userId);
+
+            if (lastMessage && Date.now() - lastMessage < cooldownsTime) {
+                return;
+            }
+
+            cooldowns.set(userId, Date.now());
+            
             const IA = new IaService();
 
             const author = message.author.username;
             const messageContent = message.content;
-
-            const iaResponse = await IA.generate_response(messageContent, author);
             
-            return message.reply(iaResponse);
+            let historiques
+
+            if (message.channel.type === ChannelType.DM) {
+                historiques = await Message.getHistoricByUserId(message.author.id);
+            } else {
+                historiques = await Message.getHistoricByGuildId(message.guild.id);
+            }
+
+            const memoire = await Memoire.getMemoireByUserId(message.author.id);
+
+            const data = await IA.generateResponse(messageContent, author, historiques, memoire);
+            const iaResponse = data["reponse"];
+
+            const botMessage = await message.reply(iaResponse);
+
+            if (message.channel.type === ChannelType.DM) {
+                await Message.addMessageDM(message.id, message.author.id, message.content, iaResponse, botMessage.id);
+            } else {
+                await Message.addMessageGuild(message.id, message.guild.id, message.author.id, message.content, iaResponse, botMessage.id);
+            }
+            await Memoire.addMemoire(message.author.id, data["memoire"] ?? "NONE");
+
+            return;
         }
     }
 

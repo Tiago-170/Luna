@@ -27,7 +27,7 @@ class Utilisateur extends Model {
         return rows;
     }
 
-    static async syncUser(id, username, icon_url) {
+    static async addUser(id, username, icon_url) {
         const db = await this.db();
 
         await db.execute(
