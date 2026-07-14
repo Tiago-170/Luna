@@ -2,7 +2,9 @@ import Controller from "../core/Controller.js";
 import 'dotenv/config';
 import IaService from "../services/IaService.js";
 import Message from "../models/Message.js";
+import Memoire from "../models/Memoire.js";
 import { ChannelType } from 'discord.js';
+import Utilisateur from "../models/Utilisateur.js";
 
 const cooldowns = new Map();
 const cooldownsTime = 5000;
@@ -15,6 +17,8 @@ class ChatController extends Controller {
                 return;
             }
             const userId = message.author.id;
+
+            await Utilisateur.addUser(message.author.id, message.author.username, message.author.displayAvatarURL());
 
             const lastMessage = cooldowns.get(userId);
 
@@ -36,9 +40,11 @@ class ChatController extends Controller {
             } else {
                 historiques = await Message.getHistoricByGuildId(message.guild.id);
             }
-            
 
-            const iaResponse = await IA.generateResponse(messageContent, author, historiques);
+            const memoire = await Memoire.getMemoireByUserId(message.author.id);
+
+            const data = await IA.generateResponse(messageContent, author, historiques, memoire);
+            const iaResponse = data["reponse"];
 
             const botMessage = await message.reply(iaResponse);
 
@@ -47,7 +53,8 @@ class ChatController extends Controller {
             } else {
                 await Message.addMessageGuild(message.id, message.guild.id, message.author.id, message.content, iaResponse, botMessage.id);
             }
-            
+            await Memoire.addMemoire(message.author.id, data["memoire"] ?? "NONE");
+
             return;
         }
     }

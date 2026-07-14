@@ -4,30 +4,6 @@ class Message extends Model {
 
     static table = "message";
 
-    static async getById(id) {
-
-        const db = await this.db();
-
-        const [rows] = await db.execute(
-            `SELECT * FROM ${this.table} WHERE id = ?`,
-            [id]
-        );
-
-        return rows;
-    }
-
-    static async addMessage(id_message, id_user, id_guild, message, is_bot=false) {
-
-        const db = await this.db();
-
-        const [result] = await db.execute(
-            `INSERT INTO ${this.table} (id_message, id_user, id_guild, message, is_bot) VALUES (?, ?, ?, ?, ?)`,
-            [id_message, id_user, id_guild, message, is_bot]
-        );
-
-        return result;
-    }
-
     static async addMessageDM(messageIdAuthor, messageAuthorId, messageContent, iaResponse, messageIdIa) {
         const db = await this.db();
 

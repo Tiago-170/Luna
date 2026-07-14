@@ -9,7 +9,7 @@ class ServerSyncController extends Controller {
     }
 
     async syncAdmin(guild, admin) {
-        await Utilisateur.syncUser(admin.id, admin.user.username, admin.user.displayAvatarURL());
+        await Utilisateur.addUser(admin.id, admin.user.username, admin.user.displayAvatarURL());
 
         await Serveur.syncAdmin(guild.id, admin.id);
     }

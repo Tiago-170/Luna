@@ -7,7 +7,7 @@ class IaService {
     });
 
 
-    async generateResponse(message, author, historiques) {
+    async generateResponse(message, author, historiques, authorMemoire) {
         let prompt = Luna_prompt_fr;
 
         if (!prompt) {
@@ -30,18 +30,43 @@ class IaService {
             });
         });
 
+        if(authorMemoire.length > 0){
+            messages.push({
+                role: "system",
+                content: `Mémoire sur ${author} : ${authorMemoire[0].contenu}`
+            });
+        }
+
         messages.push({
             role: "user",
-            content: `Message discord de ${author}: ${message}`
+            content: `Message discord de ${author} : ${message}`
         });
 
         const reponse = await IaService.groq.chat.completions.create({
-            model: "llama-3.1-8b-instant",
+            model: "llama-3.3-70b-versatile",
             messages,
             max_tokens: 400,
         });
 
-        return reponse.choices[0].message.content;
+        const contenu = reponse.choices[0].message.content;
+
+        let memoire;
+        let reponseDiscord = contenu;
+
+        if (contenu.includes("MEMOIRE:")) {
+            reponseDiscord = contenu.split("MEMOIRE:")[0].trim();
+            memoire = contenu.split("MEMOIRE:")[1].trim();
+        } else if (contenu.includes("MEMOIRE :")) {
+            reponseDiscord = contenu.split("MEMOIRE :")[0].trim();
+            memoire = contenu.split("MEMOIRE :")[1].trim();
+        }
+
+        const data = {
+            "reponse":reponseDiscord,
+            "memoire":memoire
+        }
+
+        return data;
     }
     
 }
