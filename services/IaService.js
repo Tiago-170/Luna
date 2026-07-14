@@ -7,22 +7,41 @@ class IaService {
     });
 
 
-    async generate_response(message, author) {
+    async generateResponse(message, author, historiques) {
         let prompt = Luna_prompt_fr;
-        if (prompt) {
-            let reponse = await IaService.groq.chat.completions.create({
-                model: "llama-3.1-8b-instant",
-                messages: [
-                    { role: "system", content: prompt },
-                    { role: "user", content: `Message discord de ${author}: ${message}` }
-                ],
-                max_tokens: 400,
-            });
-            return reponse.choices[0].message.content;
-        }
-        else {
+
+        if (!prompt) {
             return "Désolé, je ne peux pas répondre pour le moment.";
         }
+
+        const messages = [
+            {
+                role: "system",
+                content: prompt
+            }
+        ];
+
+        historiques.forEach((historique) => {
+            messages.push({
+                role: historique.bot ? "assistant" : "user",
+                content: historique.bot
+                    ? historique.message
+                    : `Message discord de ${historique.userName}: ${historique.message}`
+            });
+        });
+
+        messages.push({
+            role: "user",
+            content: `Message discord de ${author}: ${message}`
+        });
+
+        const reponse = await IaService.groq.chat.completions.create({
+            model: "llama-3.1-8b-instant",
+            messages,
+            max_tokens: 400,
+        });
+
+        return reponse.choices[0].message.content;
     }
     
 }
