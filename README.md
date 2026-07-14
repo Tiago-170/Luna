@@ -1,17 +1,20 @@
-# Projet - Bot discord
+<div align="center">
+    <img width="4492" height="432" alt="output-onlinetools(1)" src="https://github.com/user-attachments/assets/ef9e0dcd-7f37-4d2c-87cd-53d04941486c" />
+</div>
+<h1 align="center">Projet - Bot discord</h1>
 
 Luna est un bot Discord qui était fait en Python et qui a été refait en JavaScript.
 
 [lien d'installation discord](https://discord.com/oauth2/authorize?client_id=1438539563487465532)
 
-## Prérequis
+<h2 align="center">Prérequis</h2>
 
 - **Node.js**
 - **npm**
 - **Compte Discord**
 - **Clé API Groq**
 
-## Installation
+<h2 align="center">Installation</h2>
 
 ### 1. Cloner le projet
 ```bash
@@ -50,7 +53,7 @@ npm start
 node index.js
 ```
 
-## Architecture du projet
+<h2 align="center">Architecture du projet</h2>
 
 Ce projet utilise une **architecture MVC modifiée** en JavaScript pour correspondre aux besoins spécifiques du bot Discord.
 
@@ -76,9 +79,11 @@ Ce projet utilise une **architecture MVC modifiée** en JavaScript pour correspo
     └── system_prompt.js       # Prompt système pour l'IA
 ```
 
-## Base de données
+<h2 align="center">Base de données</h2>
 
-![alt text](./.document/BDD_schema.png)
+<div align="center">
+    <img width="660" height="480" alt="image" src="https://github.com/user-attachments/assets/e1ec87fb-e361-4bf3-8151-7b6a925ff696" />
+</div>
 
 ```sql
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -101,6 +106,10 @@ CREATE TABLE `administrateur_serveur` (
   `utilisateur_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `administrateur_serveur`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -112,6 +121,10 @@ CREATE TABLE `conversation` (
   `utilisateur_id` bigint(20) DEFAULT NULL,
   `serveur_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `conversation`
+--
 
 -- --------------------------------------------------------
 
@@ -153,6 +166,8 @@ CREATE TABLE `serveur` (
   `icon_url` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
 -- Structure de la table `utilisateur`
 --
@@ -191,7 +206,7 @@ ALTER TABLE `conversation`
 --
 ALTER TABLE `memoire`
   ADD PRIMARY KEY (`id_memoire`),
-  ADD KEY `utilisateur_id` (`utilisateur_id`);
+  ADD UNIQUE KEY `utilisateur_id` (`utilisateur_id`);
 
 --
 -- Index pour la table `message`
@@ -221,19 +236,19 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `administrateur_serveur`
 --
 ALTER TABLE `administrateur_serveur`
-  MODIFY `id_administrateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `id_administrateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=238;
 
 --
 -- AUTO_INCREMENT pour la table `conversation`
 --
 ALTER TABLE `conversation`
-  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `memoire`
 --
 ALTER TABLE `memoire`
-  MODIFY `id_memoire` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_memoire` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- Contraintes pour les tables déchargées
