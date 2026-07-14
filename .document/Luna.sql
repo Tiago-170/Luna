@@ -18,6 +18,10 @@ CREATE TABLE `administrateur_serveur` (
   `utilisateur_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `administrateur_serveur`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -29,6 +33,10 @@ CREATE TABLE `conversation` (
   `utilisateur_id` bigint(20) DEFAULT NULL,
   `serveur_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `conversation`
+--
 
 -- --------------------------------------------------------
 
@@ -70,6 +78,8 @@ CREATE TABLE `serveur` (
   `icon_url` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
 -- Structure de la table `utilisateur`
 --
@@ -108,7 +118,7 @@ ALTER TABLE `conversation`
 --
 ALTER TABLE `memoire`
   ADD PRIMARY KEY (`id_memoire`),
-  ADD KEY `utilisateur_id` (`utilisateur_id`);
+  ADD UNIQUE KEY `utilisateur_id` (`utilisateur_id`);
 
 --
 -- Index pour la table `message`
@@ -138,19 +148,19 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `administrateur_serveur`
 --
 ALTER TABLE `administrateur_serveur`
-  MODIFY `id_administrateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `id_administrateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=238;
 
 --
 -- AUTO_INCREMENT pour la table `conversation`
 --
 ALTER TABLE `conversation`
-  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `memoire`
 --
 ALTER TABLE `memoire`
-  MODIFY `id_memoire` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_memoire` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- Contraintes pour les tables déchargées
