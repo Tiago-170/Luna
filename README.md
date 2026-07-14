@@ -82,7 +82,7 @@ Ce projet utilise une **architecture MVC modifiée** en JavaScript pour correspo
 <h2 align="center">Base de données</h2>
 
 <div align="center">
-    <img width="660" height="480" alt="image" src="https://github.com/user-attachments/assets/e1ec87fb-e361-4bf3-8151-7b6a925ff696" />
+    <img width="660" height="480" alt="image" src=".document/BDD_schema.png" />
 </div>
 
 ```sql
@@ -106,11 +106,19 @@ CREATE TABLE `administrateur_serveur` (
   `utilisateur_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+----------------------------------------------------------
+
 --
--- Déchargement des données de la table `administrateur_serveur`
+-- Structure de la table `comptage`
 --
 
--- --------------------------------------------------------
+CREATE TABLE `comptage` (
+  `salon_id` bigint(20) NOT NULL,
+  `nombre` int(11) NOT NULL,
+  `serveur_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+----------------------------------------------------------
 
 --
 -- Structure de la table `conversation`
@@ -122,11 +130,7 @@ CREATE TABLE `conversation` (
   `serveur_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Déchargement des données de la table `conversation`
---
-
--- --------------------------------------------------------
+----------------------------------------------------------
 
 --
 -- Structure de la table `memoire`
@@ -139,7 +143,7 @@ CREATE TABLE `memoire` (
   `utilisateur_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
+----------------------------------------------------------
 
 --
 -- Structure de la table `message`
@@ -154,7 +158,7 @@ CREATE TABLE `message` (
   `conversation_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
+-----------------------------------------------------------
 
 --
 -- Structure de la table `serveur`
@@ -166,7 +170,8 @@ CREATE TABLE `serveur` (
   `icon_url` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
+
+----------------------------------------------------------
 
 --
 -- Structure de la table `utilisateur`
@@ -179,7 +184,6 @@ CREATE TABLE `utilisateur` (
   `code_connexion` varchar(10) DEFAULT NULL,
   `date_expiration_code` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 --
 -- Index pour les tables déchargées
 --
@@ -192,6 +196,13 @@ ALTER TABLE `administrateur_serveur`
   ADD UNIQUE KEY `id_administrateur` (`id_administrateur`),
   ADD UNIQUE KEY `uq_admin_serveur` (`serveur_id`,`utilisateur_id`),
   ADD KEY `idx_utilisateur_id` (`utilisateur_id`);
+
+--
+-- Index pour la table `comptage`
+--
+ALTER TABLE `comptage`
+  ADD PRIMARY KEY (`salon_id`),
+  ADD UNIQUE KEY `serveur_id_1` (`serveur_id`);
 
 --
 -- Index pour la table `conversation`
@@ -236,7 +247,7 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `administrateur_serveur`
 --
 ALTER TABLE `administrateur_serveur`
-  MODIFY `id_administrateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=238;
+  MODIFY `id_administrateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=304;
 
 --
 -- AUTO_INCREMENT pour la table `conversation`
@@ -248,7 +259,7 @@ ALTER TABLE `conversation`
 -- AUTO_INCREMENT pour la table `memoire`
 --
 ALTER TABLE `memoire`
-  MODIFY `id_memoire` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id_memoire` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- Contraintes pour les tables déchargées
@@ -260,6 +271,12 @@ ALTER TABLE `memoire`
 ALTER TABLE `administrateur_serveur`
   ADD CONSTRAINT `administrateur_serveur_ibfk_1` FOREIGN KEY (`serveur_id`) REFERENCES `serveur` (`serveur_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `administrateur_serveur_ibfk_2` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateur` (`utilisateur_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `comptage`
+--
+ALTER TABLE `comptage`
+  ADD CONSTRAINT `serveur_id_2` FOREIGN KEY (`serveur_id`) REFERENCES `serveur` (`serveur_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `conversation`
