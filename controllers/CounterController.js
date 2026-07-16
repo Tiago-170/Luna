@@ -1,4 +1,6 @@
 import Controller from "../core/Controller.js";
+import Comptage from "../models/Comptage.js";
+
 import { MessageFlags } from "discord.js";
 
 class CounterController extends Controller {
@@ -12,22 +14,19 @@ class CounterController extends Controller {
                     const separator = { type: 14, divider: true, spacing: 2 };
                     const header = { type: 10, content: "# Explication sur la publication du jeu" };
                     const desc = { type: 10, content: "Ce bouton permet de choisir un salon dans lequel le jeu de comptage sera appliqué." };
-            
+                    const expilcationImage = { type: 12, items: [ { media: { url: "https://tiago.cadenassecode.fr/Luna/.bot/app/.document/expilcationImageCounterPublication.png"}, description: "explication sur le bouton de publication du jeu" } ]};
                     return { flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
                         components: [{
                             type: 17, 
                             accent_color: 0x4b5ba9, 
-                            components: [ header ,separator ,desc]
+                            components: [ header ,separator ,desc, expilcationImage]
                         }]
                     };
-                case "expl_redir":
-                    // Explication Redirect
-
-                case "expl_msg":
-                    // Explication Message
             }  
         } else if (interaction.customId === "c_channel_select") {
             const selectedChannel = interaction.values[0];
+            await Comptage.addComptageChannel(selectedChannel, interaction.guild.id);
+
             return { content: `Le jeu de comptage est appliqué dans le salon <#${selectedChannel}>.`, flags: MessageFlags.Ephemeral };
 
         } else {
@@ -50,16 +49,55 @@ class CounterController extends Controller {
                         }]
                     };
                     break;
-
-                case "c_redirect":
-                    // Redirect
-                    break;
-
-                case "c_msg":
-                    // Message
-                    break;
             }
         }
+    }
+    async execute(message) {
+
+        const comptage = await Comptage.getByServerAndChannel(message.guild.id, message.channel.id);
+
+        if (!comptage) {
+            return;
+        }
+        const number = Number(comptage.nombre);
+        const expected = String(number + 1);
+        const content = message.content.trim();
+
+        if (content !== expected) {
+            const errorMessage = await message.reply(`❌ Nombre incorrect, le nombre suivant est ${expected}.`);
+
+            setTimeout(() => {
+                errorMessage.delete().catch(() => {});
+            }, 4000);
+
+            if (message.deletable) {
+                try {
+                    await message.delete();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            return;
+        }
+
+        if (String(comptage.utilisateurId) === String(message.author.id)) {
+            const errorMessage = await message.reply(`❌ Vous ne pouvez pas compter deux fois de suite.`);
+
+            setTimeout(() => {
+                errorMessage.delete().catch(() => {});
+            }, 4000);
+
+            if (message.deletable) {
+                try {
+                    await message.delete();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            return;
+        }
+
+        await Comptage.updateCountAndUser(message.channel.id, message.guild.id, number + 1, message.author.id);
     }
 }
 

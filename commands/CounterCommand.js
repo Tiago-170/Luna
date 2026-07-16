@@ -11,9 +11,7 @@ class CounterCommand {
         const btnRow = {
             type: 1,
             components: [
-                { type: 2, style: 3, label: "Publier le jeu", emoji: {name: "📤"}, custom_id: "c_setup" },
-                { type: 2, style: 1, label: "Redirection", emoji: {name: "📢"}, custom_id: "c_redirect" },
-                { type: 2, style: 2, label: "Message d'erreur", emoji: {name: "📝"}, custom_id: "c_msg" }
+                { type: 2, style: 3, label: "Publier le jeu", emoji: {name: "📤"}, custom_id: "c_setup" }
             ]
         };
 
@@ -23,9 +21,7 @@ class CounterCommand {
             components: [{
                 type: 3, custom_id: "counter_help_select", placeholder: "Explication des boutons",
                 options: [
-                    { label: "Publier le jeu", value: "expl_setup", description: "Explication sur la publication du jeu", emoji: {name: "ℹ️"} },
-                    { label: "Redirection", value: "expl_redir", description: "Explication sur la redirection", emoji: {name: "ℹ️"} },
-                    { label: "Message d'erreur", value: "expl_msg", description: "Explication sur le message d'erreur", emoji: {name: "ℹ️"} }
+                    { label: "Publier le jeu", value: "expl_setup", description: "Explication sur la publication du jeu", emoji: {name: "ℹ️"} }
                 ]
             }]
         };
