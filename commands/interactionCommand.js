@@ -1,7 +1,6 @@
 import client from "../core/Client.js";
 import Router from "../core/Router.js";
 
-import CounterCommand from "../commands/CounterCommand.js";
 import CounterController from "../controllers/CounterController.js";
 
 import { PermissionFlagsBits } from "discord.js";
@@ -19,7 +18,7 @@ client.on('interactionCreate', async (interaction) => {
                         flags: 64
                     });
                 }
-                const components = CounterCommand.createCounterComponents();
+                const components = await CounterController.createCounterComponents(interaction.guild.id);
                 await interaction.reply(components);
             }
 
@@ -35,12 +34,18 @@ client.on('interactionCreate', async (interaction) => {
     const action = interaction.customId;
 
     if (
-        (interaction.isButton() && ["c_setup", "c_redirect", "c_msg"].includes(action)) || 
+        (interaction.isButton() && ["c_setup", "c_reset", "c_disable", "c_enable"].includes(action)) || 
         (interaction.isStringSelectMenu() && action === "counter_help_select") ||
         (interaction.isChannelSelectMenu() && action === "c_channel_select")
     ) {
         const components = await CounterController.handlers(interaction);
-        await interaction.reply(components);
+
+        if (components.update) {
+            await interaction.update(components.data);
+        } else {
+            await interaction.reply(components);
+        }
+
         return;
     }
 
