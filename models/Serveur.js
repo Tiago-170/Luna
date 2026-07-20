@@ -32,7 +32,7 @@ class Serveur extends Model {
 
         await db.execute(
             `INSERT INTO ${this.table} (serveur_id, nom, icon_url) VALUES (?, ?, ?)
-                ON DUPLICATE KEY UPDATE nom = VALUES(nom), icon_url = VALUES(icon_url)`,
+            ON DUPLICATE KEY UPDATE nom = VALUES(nom), icon_url = VALUES(icon_url)`,
             [id, nom, icon]
         );
     }

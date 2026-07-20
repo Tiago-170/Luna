@@ -1,6 +1,7 @@
 import "dotenv/config";
 
 import client from "./core/Client.js";
+import "./core/Command.js";
 
 import "./events/readyEvent.js";
 import "./events/interactionCreateEvent.js";

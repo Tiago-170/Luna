@@ -11,6 +11,8 @@ class Database {
                 user: process.env.DB_USERNAME,
                 password: process.env.DB_PASSWORD,
                 database: process.env.DB_NAME,
+                supportBigNumbers: true,
+                bigNumberStrings: true,
 
                 waitForConnections: true,
                 connectionLimit: 10,
