@@ -66,6 +66,7 @@ Ce projet utilise une **architecture MVC modifiée** en JavaScript pour correspo
 ├── index.js                   # Point d'entrée
 ├── core/                      # Cœur du framework
 │   ├── Client.js              # Configuration Discord.js
+│   ├── Command.js              # Gestion des commandes /
 │   ├── Controller.js          # Contrôleur de base
 │   ├── Database.js            # Gestion de la bdd
 │   ├── Model.js               # Modèle de base
@@ -75,7 +76,6 @@ Ce projet utilise une **architecture MVC modifiée** en JavaScript pour correspo
 ├── services/                  # Services métier
 ├── events/                    # Gestion d'événements
 │   └── readyEvent.js          # Événement de démarrage
-├── commands/                  # Commandes slash du bot
 └── variable/                  # Variables globales
     └── system_prompt.js       # Prompt système pour l'IA
 ```
