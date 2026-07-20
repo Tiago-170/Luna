@@ -5,7 +5,7 @@ import CounterController from "../controllers/CounterController.js";
 
 import { PermissionFlagsBits } from "discord.js";
 
-client.on('interactionCreate', async (interaction) => {
+client.on('interactionCreate', async (interaction: any) => {
 
     if (interaction.isChatInputCommand()) {
         try {
@@ -39,6 +39,10 @@ client.on('interactionCreate', async (interaction) => {
         (interaction.isChannelSelectMenu() && action === "c_channel_select")
     ) {
         const components = await CounterController.handlers(interaction);
+
+        if (!components) {
+            return;
+        }
 
         if (components.update) {
             await interaction.update(components.data);

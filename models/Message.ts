@@ -4,10 +4,10 @@ class Message extends Model {
 
     static table = "message";
 
-    static async addMessageDM(messageIdAuthor, messageAuthorId, messageContent, iaResponse, messageIdIa) {
+    static async addMessageDM(messageIdAuthor: string | number, messageAuthorId: string | number, messageContent: string, iaResponse: string, messageIdIa: string | number) {
         const db = await this.db();
 
-        let [rows] = await db.execute(
+        let [rows] = await db.execute<any[]>(
             `SELECT conversation_id
             FROM conversation
             WHERE utilisateur_id = ? AND serveur_id IS NULL`,
@@ -17,7 +17,7 @@ class Message extends Model {
         let conversationId;
 
         if (rows.length === 0) {
-            const [result] = await db.execute(
+            const [result] = await db.execute<any>(
                 `INSERT INTO conversation (utilisateur_id)
                 VALUES (?)`,
                 [messageAuthorId]
@@ -58,10 +58,10 @@ class Message extends Model {
         );
     }
 
-    static async addMessageGuild(messageIdAuthor, messageGuildId, messageAuthorId, messageContent, iaResponse, messageIdIa) {
+    static async addMessageGuild(messageIdAuthor: string | number, messageGuildId: string | number, messageAuthorId: string | number, messageContent: string, iaResponse: string, messageIdIa: string | number) {
         const db = await this.db();
 
-        let [rows] = await db.execute(
+        let [rows] = await db.execute<any[]>(
             `SELECT conversation_id
             FROM conversation
             WHERE serveur_id = ?`,
@@ -71,7 +71,7 @@ class Message extends Model {
         let conversationId;
 
         if (rows.length === 0) {
-            const [result] = await db.execute(
+            const [result] = await db.execute<any>(
                 `INSERT INTO conversation (serveur_id)
                 VALUES (?)`,
                 [messageGuildId]
@@ -112,10 +112,10 @@ class Message extends Model {
         );
     }
 
-    static async getHistoricByUserId(messageAuthorId) {
+    static async getHistoricByUserId(messageAuthorId: string | number) {
         const db = await this.db();
 
-        const [rows] = await db.execute(
+        const [rows] = await db.execute<any[]>(
             `SELECT conversation_id
             FROM conversation
             WHERE utilisateur_id = ?`,
@@ -127,7 +127,7 @@ class Message extends Model {
         }
         const conversationId = rows[0].conversation_id;
 
-        const [result] = await db.execute(
+        const [result] = await db.execute<any[]>(
             `SELECT 
                 message.contenu AS message,
                 message.bot,
@@ -146,10 +146,10 @@ class Message extends Model {
     }
 
 
-    static async getHistoricByGuildId(messageGuildId) {
+    static async getHistoricByGuildId(messageGuildId: string | number) {
         const db = await this.db();
 
-        const [rows] = await db.execute(
+        const [rows] = await db.execute<any[]>(
             `SELECT conversation_id
             FROM conversation
             WHERE serveur_id = ?`,
@@ -161,7 +161,7 @@ class Message extends Model {
         }
         const conversationId = rows[0].conversation_id;
 
-        const [result] = await db.execute(
+        const [result] = await db.execute<any[]>(
             `SELECT 
                 message.contenu AS message,
                 message.bot,

@@ -4,11 +4,11 @@ class Serveur extends Model {
 
     static table = "serveur";
 
-    static async getById(id) {
+    static async getById(id: string | number) {
 
         const db = await this.db();
 
-        const [rows] = await db.execute(
+        const [rows] = await db.execute<any[]>(
             `SELECT * FROM ${this.table} WHERE serveur_id = ?`,
             [id]
         );
@@ -16,7 +16,7 @@ class Serveur extends Model {
         return rows;
     }
 
-    static async addAdmin(id_serveur, id_utilisateur) {
+    static async addAdmin(id_serveur: string | number, id_utilisateur: string | number) {
         const db = await this.db();
 
         const [result] = await db.execute(
@@ -27,7 +27,7 @@ class Serveur extends Model {
         return result;
     }
 
-    static async createServer(id, nom, icon) {
+    static async createServer(id: string | number, nom: string, icon: string | null) {
         const db = await this.db();
 
         await db.execute(
@@ -37,7 +37,7 @@ class Serveur extends Model {
         );
     }
 
-    static async deleteServer(id) {
+    static async deleteServer(id: string | number) {
         const db = await this.db();
 
         await db.execute(
@@ -51,7 +51,7 @@ class Serveur extends Model {
         );
     }
 
-    static async syncAdmin(guildId, adminId) {
+    static async syncAdmin(guildId: string | number, adminId: string | number) {
         const db = await this.db();
 
         await db.execute(

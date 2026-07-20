@@ -2,7 +2,7 @@ import ServerSyncController from "../controllers/ServerSyncController.js";
 
 class ServerSyncService {
 
-    static async sync(client) {
+    static async sync(client: any) {
 
         const serverSyncController = new ServerSyncController();
 
@@ -16,7 +16,7 @@ class ServerSyncService {
 
             const members = await guild.members.fetch();
 
-            const admins = members.filter(member =>
+            const admins = members.filter((member: any) =>
                 member.permissions.has("Administrator")
             );
 

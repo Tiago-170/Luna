@@ -4,7 +4,7 @@ class Comptage extends Model {
 
     static table = "comptage";
 
-    static async addComptageChannel(salonId, serveurId, actif=true) {
+    static async addComptageChannel(salonId: string | number, serveurId: string | number, actif = true) {
         const db = await this.db();
 
         await db.execute(
@@ -15,10 +15,10 @@ class Comptage extends Model {
         );
     }
 
-    static async getAllByServerId(serveurId) {
+    static async getAllByServerId(serveurId: string | number) {
         const db = await this.db();
 
-        const [result] = await db.execute(
+        const [result] = await db.execute<any[]>(
             `SELECT salon_id AS salonId,
              nombre AS nombre,
              actif AS actif,
@@ -32,7 +32,7 @@ class Comptage extends Model {
         return result[0] ?? null;
     }
 
-    static async updateCountAndUser(salonId, serveurId, nombre, utilisateurId) {
+    static async updateCountAndUser(salonId: string | number, serveurId: string | number, nombre: number, utilisateurId: string | number) {
         const db = await this.db();
 
         await db.execute(
@@ -43,7 +43,7 @@ class Comptage extends Model {
         );
     }
 
-    static async updateActive(serveurId, actif) {
+    static async updateActive(serveurId: string | number, actif: number | boolean) {
         const db = await this.db();
 
         await db.execute(
@@ -54,7 +54,7 @@ class Comptage extends Model {
         );
     }
 
-    static async Delete(guildId) {
+    static async Delete(guildId: string | number) {
         const db = await this.db();
 
         await db.execute(

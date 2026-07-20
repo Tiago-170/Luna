@@ -1,12 +1,12 @@
 class Router {
 
-    static routes = new Map();
+    static routes = new Map<string, any>();
 
-    static register(name, controller) {
+    static register(name: string, controller: any) {
         this.routes.set(name, controller);
     }
 
-    static async dispatch(interaction) {
+    static async dispatch(interaction: any) {
 
         const Controller = this.routes.get(interaction.commandName);
 

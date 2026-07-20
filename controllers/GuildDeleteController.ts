@@ -3,7 +3,7 @@ import Serveur from "../models/Serveur.js";
 
 class GuildDeleteController extends Controller {
 
-	async execute(guild) {
+	async execute(guild: any) {
 		try {
 			console.log(`Le bot a été retiré du serveur : ${guild.name}`);
 
