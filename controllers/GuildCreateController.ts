@@ -4,14 +4,14 @@ import Utilisateur from "../models/Utilisateur.js";
 
 class GuildCreateController extends Controller {
 
-	async execute(guild) {
+	async execute(guild: any) {
 		try {
 			console.log(`Nouveau serveur : ${guild.name}`);
 
 			await Serveur.createServer(guild.id, guild.name, guild.iconURL());
 			const members = await guild.members.fetch();
 
-            const admins = members.filter(member =>
+			const admins = members.filter((member: any) =>
                 member.permissions.has("Administrator")
             );
 

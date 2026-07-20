@@ -4,12 +4,12 @@ class Utilisateur extends Model {
 
     static table = "utilisateur";
 
-    static async getById(id) {
+    static async getById(id: string | number) {
 
         const db = await this.db();
 
-        const [rows] = await db.execute(
-            `SELECT * FROM ${this.table} WHERE id = ?`,
+        const [rows] = await db.execute<any[]>(
+            `SELECT * FROM ${this.table} WHERE utilisateur_id = ?`,
             [id]
         );
 
@@ -20,14 +20,14 @@ class Utilisateur extends Model {
 
         const db = await this.db();
 
-        const [rows] = await db.execute(
+        const [rows] = await db.execute<any[]>(
             `SELECT * FROM ${this.table}`
         );
 
         return rows;
     }
 
-    static async addUser(id, username, icon_url) {
+    static async addUser(id: string | number, username: string, icon_url: string) {
         const db = await this.db();
 
         await db.execute(

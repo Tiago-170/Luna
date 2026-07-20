@@ -4,7 +4,7 @@ class Memoire extends Model {
 
     static table = "memoire";
 
-    static async addMemoire(userId, messageMemoire) {
+    static async addMemoire(userId: string | number, messageMemoire: string) {
         const db = await this.db();
 
         await db.execute(
@@ -16,10 +16,10 @@ class Memoire extends Model {
         );
     }
 
-    static async getMemoireByUserId(userId) {
+    static async getMemoireByUserId(userId: string | number) {
         const db = await this.db();
 
-        const [result] = await db.execute(
+        const [result] = await db.execute<any[]>(
             `SELECT contenu FROM ${this.table}
             WHERE utilisateur_id = ?`,
             [userId]

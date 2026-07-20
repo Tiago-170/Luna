@@ -1,83 +1,184 @@
 <div align="center">
     <img width="4492" height="432" alt="output-onlinetools(1)" src="https://github.com/user-attachments/assets/ef9e0dcd-7f37-4d2c-87cd-53d04941486c" />
 </div>
-<h1 align="center">Projet - Bot discord</h1>
 
-Luna est un bot Discord qui était fait en Python et qui a été refait en JavaScript.
+<h1 align="center">Projet - Bot Discord</h1>
 
-[lien d'installation discord](https://discord.com/oauth2/authorize?client_id=1438539563487465532)
+Luna est un bot Discord refait en **TypeScript**. Le code source est organisé dans `src/`, compilé vers `dist/`, puis lancé depuis le build généré.
+
+[Lien d'installation Discord](https://discord.com/oauth2/authorize?client_id=1438539563487465532)
 
 <h2 align="center">Prérequis</h2>
 
-- **Node.js**
+- **Node.js** 20 ou plus récent
 - **npm**
 - **Compte Discord**
 - **Clé API Groq**
+- **Base MySQL** compatible avec le schéma du projet
+
+<h2 align="center">Structure TypeScript</h2>
+
+Le projet utilise ces fichiers à la racine du projet local pour compiler et exécuter le bot :
+
+- `package.json` pour les scripts et dépendances
+- `tsconfig.json` pour la configuration TypeScript
+- `src/` pour le code source
+- `dist/` pour le résultat de compilation
+
+Si ton dépôt GitHub ne publie que `src/`, garde quand même `package.json` et `tsconfig.json` à la racine du projet local. Sans eux, TypeScript ne peut pas compiler correctement.
+
+### Configuration TypeScript recommandée
+
+Le projet est prévu pour cette configuration :
+
+tsconfig.json
+```json
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "esnext",
+    "types": ["node"],
+
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    "checkJs": false,
+
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    "strict": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["dist", "node_modules"]
+}
+```
+
+package.json
+```json
+{
+  "name": "luna",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Discord bot",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.26.4",
+    "dotenv": "^17.4.2",
+    "groq": "^5.31.1",
+    "groq-sdk": "^0.37.0",
+    "mysql2": "^3.22.6"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.23.1",
+    "typescript": "^7.0.2"
+  }
+}
+```
+
+Une fois la migration terminée, tu peux désactiver `allowJs` pour forcer uniquement le code TypeScript.
 
 <h2 align="center">Installation</h2>
 
 ### 1. Cloner le projet
+
 ```bash
 git clone https://github.com/Tiago-170/Luna.git
-cd Luna/.bot/app
 ```
 
 ### 2. Installer les dépendances
+
 ```bash
 npm install discord.js, dotenv, groq, mysql2, groq-sdk
+
+npx tsc --init
 ```
 
 ### 3. Configurer les variables d'environnement
 
-Créez un fichier `.env` à la racine du projet :
+Crée un fichier `.env` à la racine du projet :
 
 ```env
-# Token et ID Discord du bot
 TOKEN=
 CLIENT_ID=
 
-# Clés API Groq
 GROK_API_1=
 
-# Configuration de la base de données
 DB_HOST=
 DB_USERNAME=
 DB_PASSWORD=
 DB_NAME=
 ```
 
-### 4. Lancer le bot
+### 4. Compiler le projet
+
+```bash
+npm run build
+```
+
+TypeScript compile `src/` vers `dist/` avec la configuration de `tsconfig.json`.
+
+### 5. Lancer le bot
 
 ```bash
 npm start
-# ou
-node index.js
+```
+
+<h2 align="center">Scripts</h2>
+
+Dans `package.json` :
+
+```json
+{
+  "dev": "tsx watch src/index.ts",
+  "build": "tsc -p tsconfig.json",
+  "start": "node dist/index.js"
+}
 ```
 
 <h2 align="center">Architecture du projet</h2>
 
-Ce projet utilise une **architecture MVC modifiée** en JavaScript pour correspondre aux besoins spécifiques du bot Discord.
+Ce projet utilise une **architecture MVC modifiée** en TypeScript pour correspondre aux besoins spécifiques du bot Discord.
 
 ![schéma d'une architecture MVC JavaScript adaptée](./.document/MVC_schema.png)
 
 ### Structure des dossiers
 
 ```
-├── index.js                   # Point d'entrée
+├── index.ts                   # Point d'entrée
 ├── core/                      # Cœur du framework
-│   ├── Client.js              # Configuration Discord.js
-│   ├── Command.js              # Gestion des commandes /
-│   ├── Controller.js          # Contrôleur de base
-│   ├── Database.js            # Gestion de la bdd
-│   ├── Model.js               # Modèle de base
-│   └── Router.js              # Routeur d'événements
+│   ├── Client.ts              # Configuration Discord.js
+│   ├── Command.ts             # Gestion des commandes /
+│   ├── Controller.ts          # Contrôleur de base
+│   ├── Database.ts            # Gestion de la bdd
+│   ├── Model.ts               # Modèle de base
+│   └── Router.ts              # Routeur d'événements
 ├── controllers/               # Contrôleurs de l'app
 ├── models/                    # Modèles de données
 ├── services/                  # Services métier
 ├── events/                    # Gestion d'événements
-│   └── readyEvent.js          # Événement de démarrage
+│   └── readyEvent.ts          # Événement de démarrage
 └── variable/                  # Variables globales
-    └── system_prompt.js       # Prompt système pour l'IA
+  └── system_prompt.ts       # Prompt système pour l'IA
 ```
 
 <h2 align="center">Base de données</h2>

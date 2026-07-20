@@ -3,14 +3,14 @@ class Controller {
     /**
      * Répond à l'interaction
      */
-    async reply(interaction, data) {
+    async reply(interaction: any, data: any) {
         return interaction.reply(data);
     }
 
     /**
      * Envoie un message supplémentaire après la réponse initiale.
      */
-    async followUp(interaction, message, ephemeral = false) {
+    async followUp(interaction: any, message: string, ephemeral = false) {
         return interaction.followUp({
             content: message,
             ephemeral: ephemeral
@@ -20,7 +20,7 @@ class Controller {
     /**
      * Réponse privée (ephemeral)
      */
-    async ephemeral(interaction, message) {
+    async ephemeral(interaction: any, message: string) {
         return interaction.reply({
             content: message,
             ephemeral: true
@@ -30,21 +30,21 @@ class Controller {
     /**
      * Modifier la réponse
      */
-    async edit(interaction, data) {
+    async edit(interaction: any, data: any) {
         return interaction.editReply(data);
     }
 
     /**
      * Réponse différée
      */
-    async defer(interaction, ephemeral = false) {
+    async defer(interaction: any, ephemeral = false) {
         return interaction.deferReply({ ephemeral });
     }
 
     /**
      * Gestion commune des erreurs
      */
-    async handleError(interaction, error) {
+    async handleError(interaction: any, error: unknown) {
         console.error(error);
 
         const response = {

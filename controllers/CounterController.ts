@@ -5,7 +5,7 @@ import client from "../core/Client.js";
 import { MessageFlags } from "discord.js";
 
 class CounterController extends Controller {
-    static async createCounterComponents(serverId) {
+    static async createCounterComponents(serverId: string | number) {
         const comptageInfo = await Comptage.getAllByServerId(serverId);
         let channelId;
         let active;
@@ -25,9 +25,9 @@ class CounterController extends Controller {
         const separator = { type: 14, divider: true, spacing: 2 };
         const header = { type: 10, content: "# Configuration du Comptage\n\nBienvenue dans le panneau de configuration du jeu de comptage !" };
         const desc = { type: 10, content: `Le jeu est actuellement ${active === 1 ? "activé" : "désactivé"} dans ${channelNameMessage}.\n\nUtilisez les boutons ci-dessous pour configurer le jeu sur votre serveur.` };
-        const btnRow = { type: 1, components: [ { type: 2, style: 1, label: "Publier le jeu", emoji: {id: "1528498321889558549"}, custom_id: "c_setup" } ] };
+        const btnRow: any = { type: 1, components: [ { type: 2, style: 1, label: "Publier le jeu", emoji: {id: "1528498321889558549"}, custom_id: "c_setup" } ] };
         const helpText = { type: 10, content: "Si vous avez besoin d'explications sur les boutons, utilisez le menu ci-dessous" };
-        const helpRow = { type: 1,
+        const helpRow: any = { type: 1,
             components: [{
                 type: 3, custom_id: "counter_help_select", placeholder: "Explication des boutons",
                 options: [
@@ -54,7 +54,7 @@ class CounterController extends Controller {
         };
     }
 
-    static async handlers(interaction) {
+    static async handlers(interaction: any) {
         if (interaction.customId === "counter_help_select") {
             const selected = interaction.values[0];
 
@@ -128,7 +128,7 @@ class CounterController extends Controller {
             }
         }
     }
-    async execute(message) {
+    async execute(message: any) {
 
         const comptage = await Comptage.getAllByServerId(message.guild.id);
 

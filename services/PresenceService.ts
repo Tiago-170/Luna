@@ -2,7 +2,7 @@ import { ActivityType } from 'discord.js';
 
 class PresenceService {
 
-    static async start(client) {
+    static async start(client: any) {
         setInterval(() => {
             setTimeout(() => {
                 client.user.setPresence({
