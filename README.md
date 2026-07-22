@@ -25,9 +25,7 @@ Le projet utilise ces fichiers à la racine du projet local pour compiler et ex�
 - `src/` pour le code source
 - `dist/` pour le résultat de compilation
 
-Si ton dépôt GitHub ne publie que `src/`, garde quand même `package.json` et `tsconfig.json` à la racine du projet local. Sans eux, TypeScript ne peut pas compiler correctement.
-
-### Configuration TypeScript recommandée
+### Configuration TypeScript
 
 Le projet est prévu pour cette configuration :
 
@@ -94,8 +92,6 @@ package.json
   }
 }
 ```
-
-Une fois la migration terminée, tu peux désactiver `allowJs` pour forcer uniquement le code TypeScript.
 
 <h2 align="center">Installation</h2>
 
