@@ -5,6 +5,10 @@ import client from "../core/Client.js";
 import { MessageFlags } from "discord.js";
 
 class CounterController extends Controller {
+    static separator = { type: 14, divider: true, spacing: 2 };
+    
+    static createHeader(content: string) { return { type: 10, content: content } };
+
     static async createCounterComponents(serverId: string | number) {
         const comptageInfo = await Comptage.getAllByServerId(serverId);
         let channelId;
@@ -22,8 +26,7 @@ class CounterController extends Controller {
             channelNameMessage = "aucun salon";
         }
 
-        const separator = { type: 14, divider: true, spacing: 2 };
-        const header = { type: 10, content: "# Configuration du Comptage\n\nBienvenue dans le panneau de configuration du jeu de comptage !" };
+        const header = this.createHeader("# Configuration du Comptage\n\nBienvenue dans le panneau de configuration du jeu de comptage !");
         const desc = { type: 10, content: `Le jeu est actuellement ${active === 1 ? "activé" : "désactivé"} dans ${channelNameMessage}.\n\nUtilisez les boutons ci-dessous pour configurer le jeu sur votre serveur.` };
         const btnRow: any = { type: 1, components: [ { type: 2, style: 1, label: "Publier le jeu", emoji: {id: "1528498321889558549"}, custom_id: "c_setup" } ] };
         const helpText = { type: 10, content: "Si vous avez besoin d'explications sur les boutons, utilisez le menu ci-dessous" };
@@ -50,7 +53,7 @@ class CounterController extends Controller {
 
         return {
             flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
-            components: [ { type: 17, accent_color: 0x4b5ba9, components: [ header, separator, desc, btnRow, separator, helpText, helpRow] } ]
+            components: [ { type: 17, accent_color: 0x4b5ba9, components: [ header, this.separator, desc, btnRow, this.separator, helpText, helpRow] } ]
         };
     }
 
@@ -60,26 +63,23 @@ class CounterController extends Controller {
 
             switch (selected) {
                 case "expl_setup":
-                    const separator = { type: 14, divider: true, spacing: 2 };
-                    const header = { type: 10, content: "# Explication sur la publication du jeu" };
+                    const header = this.createHeader("# Explication sur la publication du jeu");
                     const desc = { type: 10, content: "Ce bouton permet de choisir un salon dans lequel le jeu de comptage sera appliqué." };
                     const expilcationImage = { type: 12, items: [ { media: { url: "https://tiago.cadenassecode.fr/Luna/.bot/app/.document/expilcationImageCounterPublication.png"}, description: "explication sur le bouton de publication du jeu" } ]};
                     return { flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
-                        components: [{ type: 17, accent_color: 0x4b5ba9, components: [ header ,separator ,desc, expilcationImage] }]
+                        components: [{ type: 17, accent_color: 0x4b5ba9, components: [ header ,this.separator ,desc, expilcationImage] }]
                     };
                 case "expl_reset":
-                    const separatorReset = { type: 14, divider: true, spacing: 2 };
-                    const headerReset = { type: 10, content: "# Explication sur la réinitialisation du jeu" };
+                    const headerReset = this.createHeader("# Explication sur la réinitialisation du jeu");
                     const descReset = { type: 10, content: "Ce bouton permet de réinitialiser le jeu de comptage. Toutes les données seront effacées." };
                     return { flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
-                        components: [{ type: 17, accent_color: 0x4b5ba9,  components: [ headerReset ,separatorReset ,descReset] }]
+                        components: [{ type: 17, accent_color: 0x4b5ba9,  components: [ headerReset ,this.separator ,descReset] }]
                     };
                 case "expl_enable_disable":
-                    const separatorEnableDisable = { type: 14, divider: true, spacing: 2 };
-                    const headerEnableDisable = { type: 10, content: "# Explication sur l'activation/désactivation du jeu" };
+                    const headerEnableDisable = this.createHeader("# Explication sur l'activation/désactivation du jeu");
                     const descEnableDisable = { type: 10, content: "Ce bouton permet d'activer ou de désactiver le jeu de comptage." };
                     return { flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
-                        components: [{ type: 17, accent_color: 0x4b5ba9, components: [ headerEnableDisable ,separatorEnableDisable ,descEnableDisable] }]
+                        components: [{ type: 17, accent_color: 0x4b5ba9, components: [ headerEnableDisable ,this.separator ,descEnableDisable] }]
                     };
             }  
         } else if (interaction.customId === "c_channel_select") {
@@ -93,15 +93,14 @@ class CounterController extends Controller {
 
             switch (action) {
                 case "c_setup":
-                    const separator = { type: 14, divider: true, spacing: 2 };
-                    const header = { type: 10, content: "# Publication du jeu" };
+                    const header = this.createHeader("# Publication du jeu");
                     const channelRow = { 
                         type: 1, components: 
                             [ { type: 8, custom_id: "c_channel_select", channel_types: [0], placeholder: "Quel salon ?" }]
                     };
             
                     return { flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
-                        components: [{ type: 17, accent_color: 0x4b5ba9, components: [ header ,separator ,channelRow ] }]
+                        components: [{ type: 17, accent_color: 0x4b5ba9, components: [ header ,this.separator ,channelRow ] }]
                     };
                 case "c_reset":
                     await Comptage.Delete(interaction.guild.id);
