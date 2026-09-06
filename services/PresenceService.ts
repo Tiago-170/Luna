@@ -17,7 +17,7 @@ class PresenceService {
             setTimeout(() => {
                 client.user.setPresence({
                     activities: [{ 
-                        name: "🌐 https://test.fr", 
+                        name: "🌐 Bientôt disponible !", 
                         type: ActivityType.Watching,
                         url: "https://test.fr", 
                     }],

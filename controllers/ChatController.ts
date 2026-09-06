@@ -66,9 +66,21 @@ class ChatController extends Controller {
 
             // Génère la réponse de l'IA en utilisant le service IaService.
             const data = await IA.generateResponse(messageContent, author, historiques, memoire);
-            const iaResponse = data.reponse;
+            let iaResponse = data.reponse;
 
-            const botMessage = await message.reply(iaResponse);
+            // Si l'IA renvoie une réponse vide, utiliser un fallback pour éviter les erreurs
+            if (!iaResponse || (typeof iaResponse === 'string' && iaResponse.trim() === '')) {
+                console.warn(`IA a renvoyé une réponse vide pour le message ${message.id} de ${message.author.id}`);
+                iaResponse = "Désolé, je n'ai pas de réponse pour le moment.";
+            }
+
+            let botMessage: any;
+            try {
+                botMessage = await message.reply(iaResponse);
+            } catch (err) {
+                console.error('Erreur lors de l\'envoi du message de bot :', err);
+                // Ne pas relancer l'erreur pour éviter que le process se termine.
+            }
 
             // Enregistre l'historique et la mémoire des messages en fonction du type de canal (DM ou serveur).
             if (message.channel.type === ChannelType.DM) {

@@ -17,10 +17,15 @@ type IAResponse = {
 };
 
 class IaService {
-    static groq = new Groq({
-        apiKey: process.env.GROK_API_1 
-    });
+    private static getClient(): Groq {
+        const apiKey = process.env.GROQ_API_1;
 
+        if (!apiKey) {
+            throw new Error("Aucune clé API Groq trouvée.");
+        }
+
+        return new Groq({ apiKey });
+    }
 
     async generateResponse(message: string, author: string, historiques: HistoricEntry[] | null, authorMemoire: MemoireEntry[] | null): Promise<IAResponse> {
         const prompt = Luna_prompt_fr;
@@ -64,39 +69,48 @@ class IaService {
             content: `Message discord de ${author} : ${message}`
         });
 
-        const reponse = await IaService.groq.chat.completions.create({
-            model: "llama-3.3-70b-versatile",
-            messages,
-            max_tokens: 400,
-        });
+        try {
+            const groq = IaService.getClient();
 
-        const contenu = reponse.choices[0]?.message.content ?? "";
+            const reponse = await groq.chat.completions.create({
+                model: "openai/gpt-oss-20b",
+                messages,
+                max_tokens: 400,
+            });
 
-        let memoire: string | undefined;
-        let reponseDiscord = contenu;
+            const contenu = reponse.choices[0]?.message?.content ?? "";
 
-        if (contenu.includes("MEMOIRE:")) {
-            const parts = contenu.split("MEMOIRE:");
-            reponseDiscord = parts[0]?.trim() ?? "";
-            memoire = parts[1]?.trim();
-        } else if (contenu.includes("MEMOIRE :")) {
-            const parts = contenu.split("MEMOIRE :");
-            reponseDiscord = parts[0]?.trim() ?? "";
-            memoire = parts[1]?.trim();
-        }
+            let memoire: string | undefined;
+            let reponseDiscord = contenu;
 
-        if (memoire) {
+            if (contenu.includes("MEMOIRE:")) {
+                const parts = contenu.split("MEMOIRE:");
+                reponseDiscord = parts[0]?.trim() ?? "";
+                memoire = parts[1]?.trim();
+            } else if (contenu.includes("MEMOIRE :")) {
+                const parts = contenu.split("MEMOIRE :");
+                reponseDiscord = parts[0]?.trim() ?? "";
+                memoire = parts[1]?.trim();
+            }
+
+            if (memoire) {
+                return {
+                    reponse: reponseDiscord,
+                    memoire
+                };
+            }
+
             return {
-                reponse: reponseDiscord,
-                memoire
+                reponse: reponseDiscord
+            };
+        } catch (error) {
+            console.error("Erreur Groq :", error);
+
+            return {
+                reponse: "Désolé, je n'ai pas pu contacter Groq pour le moment."
             };
         }
-
-        return {
-            reponse: reponseDiscord
-        };
     }
-    
 }
 
 export default IaService;
