@@ -2,6 +2,7 @@ import client from "../core/Client.js";
 import PresenceService from "../services/PresenceService.js";
 import ServerSyncService from "../services/ServerSyncService.js";
 
+// Gère l'événement lorsque le client Discord est prêt.
 client.on("clientReady", async (client) => {
     PresenceService.start(client);
 

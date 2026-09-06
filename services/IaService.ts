@@ -27,6 +27,7 @@ class IaService {
         return new Groq({ apiKey });
     }
 
+    // Génère une réponse de l'IA en fonction du message, de l'auteur, de l'historique et de la mémoire.
     async generateResponse(message: string, author: string, historiques: HistoricEntry[] | null, authorMemoire: MemoireEntry[] | null): Promise<IAResponse> {
         const prompt = Luna_prompt_fr;
 
@@ -46,6 +47,7 @@ class IaService {
             }
         ];
 
+        // Ajoute l'historique des messages à la liste des messages pour le prompt.
         (historiques ?? []).forEach((historique) => {
             messages.push({
                 role: historique.bot ? "assistant" : "user",
@@ -69,6 +71,7 @@ class IaService {
             content: `Message discord de ${author} : ${message}`
         });
 
+        // Appelle l'API Groq pour générer une réponse basée sur le prompt et les messages.
         try {
             const groq = IaService.getClient();
 
@@ -83,6 +86,7 @@ class IaService {
             let memoire: string | undefined;
             let reponseDiscord = contenu;
 
+            // Vérifie si la réponse contient une section "MEMOIRE" et la sépare du reste de la réponse.
             if (contenu.includes("MEMOIRE:")) {
                 const parts = contenu.split("MEMOIRE:");
                 reponseDiscord = parts[0]?.trim() ?? "";

@@ -4,6 +4,15 @@ class Message extends Model {
 
     static table = "message";
 
+    /**
+     *  Ajoute un nouveau message pour un utilisateur spécifique dans la base de données
+     *
+     * @param {string | number} messageIdAuthor - L'ID du message.
+     * @param {string | number} messageAuthorId - L'ID de l'utilisateur.
+     * @param {string} messageContent - Le contenu du message.
+     * @param {string} iaResponse - La réponse de l'IA.
+     * @param {string | number} messageIdIa - L'ID du message de l'IA.
+     */
     static async addMessageDM(messageIdAuthor: string | number, messageAuthorId: string | number, messageContent: string, iaResponse: string, messageIdIa: string | number) {
         const db = await this.db();
 
@@ -58,6 +67,16 @@ class Message extends Model {
         );
     }
 
+    /**
+     *  Ajoute un nouveau message pour un serveur spécifique dans la base de données
+     *
+     * @param {string | number} messageIdAuthor - L'ID du message.
+     * @param {string | number} messageGuildId - L'ID du serveur.
+     * @param {string | number} messageAuthorId - L'ID de l'utilisateur.
+     * @param {string} messageContent - Le contenu du message.
+     * @param {string} iaResponse - La réponse de l'IA.
+     * @param {string | number} messageIdIa - L'ID du message de l'IA.
+     */
     static async addMessageGuild(messageIdAuthor: string | number, messageGuildId: string | number, messageAuthorId: string | number, messageContent: string, iaResponse: string, messageIdIa: string | number) {
         const db = await this.db();
 
@@ -112,6 +131,12 @@ class Message extends Model {
         );
     }
 
+    /**
+     *  Récupère l'historique des messages pour un utilisateur spécifique dans la base de données
+     *
+     * @param {string | number} messageAuthorId - L'ID de l'utilisateur.
+     * @returns {Object} Un tableau d'objets représentant l'historique des messages associés à l'utilisateur.
+     */
     static async getHistoricByUserId(messageAuthorId: string | number) {
         const db = await this.db();
 
@@ -145,7 +170,12 @@ class Message extends Model {
         return result;
     }
 
-
+    /**
+     *  Récupère l'historique des messages pour un serveur spécifique dans la base de données
+     *
+     * @param {string | number} messageGuildId - L'ID du serveur.
+     * @returns {Object} Un tableau d'objets représentant l'historique des messages associés au serveur.
+     */
     static async getHistoricByGuildId(messageGuildId: string | number) {
         const db = await this.db();
 

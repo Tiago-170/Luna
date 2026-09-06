@@ -2,6 +2,7 @@ import ServerSyncController from "../controllers/ServerSyncController.js";
 
 class ServerSyncService {
 
+    // Synchronise tous les serveurs et leurs administrateurs avec la base de données.
     static async sync(client: any) {
 
         const serverSyncController = new ServerSyncController();

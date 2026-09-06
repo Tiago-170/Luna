@@ -4,6 +4,7 @@ import mysql, { type Pool } from "mysql2/promise";
 class Database {
     static instance: Pool | null = null;
 
+    // Récupère les informations de connexion à la base de données
     static async getConnection(): Promise<Pool> {
         if (!this.instance) {
             this.instance = mysql.createPool({
