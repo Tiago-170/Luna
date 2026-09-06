@@ -4,6 +4,12 @@ class Memoire extends Model {
 
     static table = "memoire";
 
+    /**
+     *  Ajoute un nouveau message de mémoire pour un utilisateur spécifique dans la base de données
+     *
+     * @param {string | number} userId - L'ID de l'utilisateur.
+     * @param {string} messageMemoire - Le message de mémoire.
+     */
     static async addMemoire(userId: string | number, messageMemoire: string) {
         const db = await this.db();
 
@@ -16,6 +22,12 @@ class Memoire extends Model {
         );
     }
 
+    /**
+     *  Récupère tous les messages de mémoire associés à un utilisateur spécifique dans la base de données
+     *
+     * @param {string | number} userId - L'ID de l'utilisateur.
+     * @returns {Object} Un tableau d'objets représentant les messages de mémoire associés à l'utilisateur.
+     */
     static async getMemoireByUserId(userId: string | number) {
         const db = await this.db();
 

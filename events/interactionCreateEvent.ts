@@ -5,8 +5,10 @@ import CounterController from "../controllers/CounterController.js";
 
 import { PermissionFlagsBits } from "discord.js";
 
+// Gère l'événement d'interaction avec le bot Discord.
 client.on('interactionCreate', async (interaction: any) => {
 
+    // Vérifie si l'interaction est une commande de chat
     if (interaction.isChatInputCommand()) {
         try {
             const command = interaction.commandName;
@@ -31,6 +33,7 @@ client.on('interactionCreate', async (interaction: any) => {
         }
     }
 
+    // Vérifie si l'interaction est un bouton ou un menu déroulant
     const action = interaction.customId;
 
     if (

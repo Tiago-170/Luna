@@ -1,19 +1,35 @@
 import Controller from "../core/Controller.js";
 import Comptage from "../models/Comptage.js";
-import client from "../core/Client.js";
 
 import { MessageFlags } from "discord.js";
 
 class CounterController extends Controller {
+
+    // Un séparateur pour les composants discord
     static separator = { type: 14, divider: true, spacing: 2 };
     
+    /**
+     * Crée un en-tête pour les composants discord.
+     *
+     * @param {string} content - Le contenu de l'en-tête.
+     * @returns {Object} L'objet représentant l'en-tête.
+     */
     static createHeader(content: string) { return { type: 10, content: content } };
 
+    /**
+     * Crée un composants du jeu de comptage.
+     *
+     * @param {string | number} serverId - L'ID du serveur discord.
+     * @returns {Object} L'objet représentant les composants du jeu de comptage.
+     */
     static async createCounterComponents(serverId: string | number) {
+        // Récupère les informations du jeu de comptage pour le serveur.
         const comptageInfo = await Comptage.getAllByServerId(serverId);
-        let channelId;
-        let active;
-        let channelNameMessage;
+
+        // Déclare les variables pour plus tard.
+        let channelId; // ID du salon de comptage.
+        let active; // État du jeu de comptage (activé ou désactivé).
+        let channelNameMessage; // Nom du salon de comptage actuel.
 
         if (comptageInfo) {
             channelId = comptageInfo.salonId;
@@ -26,6 +42,7 @@ class CounterController extends Controller {
             channelNameMessage = "aucun salon";
         }
 
+        // Crée les composants discord pour le jeu de comptage.
         const header = this.createHeader("# Configuration du Comptage\n\nBienvenue dans le panneau de configuration du jeu de comptage !");
         const desc = { type: 10, content: `Le jeu est actuellement ${active === 1 ? "activé" : "désactivé"} dans ${channelNameMessage}.\n\nUtilisez les boutons ci-dessous pour configurer le jeu sur votre serveur.` };
         const btnRow: any = { type: 1, components: [ { type: 2, style: 1, label: "Publier le jeu", emoji: {id: "1528498321889558549"}, custom_id: "c_setup" } ] };
@@ -40,7 +57,8 @@ class CounterController extends Controller {
                 ]
             }]
         };
-
+        
+        // Gestion de l'affichage des boutons en fonction de l'état du jeu de comptage.
         if (comptageInfo) {
             btnRow.components.push({ type: 2, style: 4, label: "Réinitialiser", emoji: {id: "1528497532424945834"}, custom_id: "c_reset" });
         }
@@ -57,7 +75,15 @@ class CounterController extends Controller {
         };
     }
 
+    /**
+     * Crée un composants du jeu de comptage et gère les interactions.
+     *
+     * @param {any} interaction - L'interaction discord (boutons, selection, etc..).
+     * @returns {Object} message de confirmation, composant ou update d'un composant.
+     */
     static async handlers(interaction: any) {
+
+        // Gestion des interactions de selection avec les composants discord.
         if (interaction.customId === "counter_help_select") {
             const selected = interaction.values[0];
 
@@ -82,13 +108,16 @@ class CounterController extends Controller {
                         components: [{ type: 17, accent_color: 0x4b5ba9, components: [ headerEnableDisable ,this.separator ,descEnableDisable] }]
                     };
             }  
+         
         } else if (interaction.customId === "c_channel_select") {
+            // Gestion des interactions de selection de salons avec les composants discord.
             const selectedChannel = interaction.values[0];
             await Comptage.addComptageChannel(selectedChannel, interaction.guild.id);
 
             return { content: `Le jeu de comptage est appliqué dans le salon <#${selectedChannel}>.`, flags: MessageFlags.Ephemeral };
-
+        
         } else {
+            // Gestion des interactions de boutons avec les composants discord.
             const action = interaction.customId;
 
             switch (action) {
@@ -127,6 +156,12 @@ class CounterController extends Controller {
             }
         }
     }
+
+    /**
+     *  Gère les interactions.
+     *
+     * @param {any} message - objet représentant le message discord et toutes les informations associées.
+     */
     async execute(message: any) {
 
         const comptage = await Comptage.getAllByServerId(message.guild.id);

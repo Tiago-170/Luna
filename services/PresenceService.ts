@@ -2,6 +2,7 @@ import { ActivityType } from 'discord.js';
 
 class PresenceService {
 
+    // Met à jour la présence du bot Discord à intervalles réguliers.
     static async start(client: any) {
         setInterval(() => {
             setTimeout(() => {
@@ -17,7 +18,7 @@ class PresenceService {
             setTimeout(() => {
                 client.user.setPresence({
                     activities: [{ 
-                        name: "🌐 https://test.fr", 
+                        name: "🌐 Bientôt disponible !", 
                         type: ActivityType.Watching,
                         url: "https://test.fr", 
                     }],

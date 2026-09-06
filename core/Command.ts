@@ -3,6 +3,7 @@ import { REST, Routes, PermissionFlagsBits } from "discord.js";
 
 const clientId = process.env.CLIENT_ID;
 
+// Définir les commandes de l'application
 const commands = [
     {
         name: 'counter',
@@ -13,13 +14,10 @@ const commands = [
 
 const Rest = new REST({ version: '10' }).setToken(process.env.TOKEN!);
 
+// Enregistrer les commandes de l'application auprès de l'API Discord
 (async () => {
     try {
-        console.log('Started refreshing application (/) commands.');
-
         await Rest.put(Routes.applicationCommands(clientId!), { body: commands });
-
-        console.log('Successfully reloaded application (/) commands.');
     } catch (error) {
         console.error(error);
     }

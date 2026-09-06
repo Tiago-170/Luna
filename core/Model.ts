@@ -2,6 +2,7 @@ import Database from "./Database.js";
 import type { Pool } from "mysql2/promise";
 
 class Model {
+    // Définir la table associée au modèle
 
     static table = "";
 
