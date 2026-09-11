@@ -186,7 +186,7 @@ Ce projet utilise une **architecture MVC modifiée** en TypeScript pour correspo
     ├── events/                    # Gestion d'événements
     │   └── readyEvent.ts          # Événement de démarrage
     └── variable/                  # Variables globales
-      └── system_prompt.ts       # Prompt système pour l'IA
+      └── system_prompt.ts         # Prompt système pour l'IA
 ```
 
 <h2 align="center">Base de données</h2>
