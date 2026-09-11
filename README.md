@@ -2,15 +2,15 @@
     <img width="4492" height="432" alt="output-onlinetools(1)" src="https://github.com/user-attachments/assets/ef9e0dcd-7f37-4d2c-87cd-53d04941486c" />
 </div>
 
-<h1 align="center">Projet - Bot Discord</h1>
-
-Luna est un bot Discord refait en **TypeScript**. Le code source est organisé dans `src/`, compilé vers `dist/`, puis lancé depuis le build généré.
+---
 
 <div align="center">
     
-[![Installer sur Discord](https://img.shields.io/badge/Installer%20sur%20Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/oauth2/authorize?client_id=1438539563487465532)
+[![Installer sur Discord](https://img.shields.io/badge/Ajouter%20à%20votre%20serveur%20Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/oauth2/authorize?client_id=1438539563487465532)
 
 </div>
+
+---
 
 <h2 align="center">Prérequis</h2>
 
@@ -29,7 +29,7 @@ Le projet utilise ces fichiers à la racine du projet local pour compiler et ex�
 - `src/` pour le code source
 - `dist/` pour le résultat de compilation
 
-Si ton dépôt GitHub ne publie que `src/`, garde quand même `package.json` et `tsconfig.json` à la racine du projet local. Sans eux, TypeScript ne peut pas compiler correctement.
+`package.json` et `tsconfig.json` sont à la racine du projet local, le code ci-dessus doit être mis dans un dossier `src/` 
 
 ### Configuration TypeScript recommandée
 
@@ -168,21 +168,25 @@ Ce projet utilise une **architecture MVC modifiée** en TypeScript pour correspo
 ### Structure des dossiers
 
 ```
-├── index.ts                   # Point d'entrée
-├── core/                      # Cœur du framework
-│   ├── Client.ts              # Configuration Discord.js
-│   ├── Command.ts             # Gestion des commandes /
-│   ├── Controller.ts          # Contrôleur de base
-│   ├── Database.ts            # Gestion de la bdd
-│   ├── Model.ts               # Modèle de base
-│   └── Router.ts              # Routeur d'événements
-├── controllers/               # Contrôleurs de l'app
-├── models/                    # Modèles de données
-├── services/                  # Services métier
-├── events/                    # Gestion d'événements
-│   └── readyEvent.ts          # Événement de démarrage
-└── variable/                  # Variables globales
-  └── system_prompt.ts       # Prompt système pour l'IA
+├── `package.json` 
+├── `tsconfig.json`
+├── dist/
+└── src/
+    ├── index.ts                   # Point d'entrée
+    ├── core/                      # Cœur du framework
+    │   ├── Client.ts              # Configuration Discord.js
+    │   ├── Command.ts             # Gestion des commandes /
+    │   ├── Controller.ts          # Contrôleur de base
+    │   ├── Database.ts            # Gestion de la bdd
+    │   ├── Model.ts               # Modèle de base
+    │   └── Router.ts              # Routeur d'événements
+    ├── controllers/               # Contrôleurs de l'app
+    ├── models/                    # Modèles de données
+    ├── services/                  # Services métier
+    ├── events/                    # Gestion d'événements
+    │   └── readyEvent.ts          # Événement de démarrage
+    └── variable/                  # Variables globales
+      └── system_prompt.ts       # Prompt système pour l'IA
 ```
 
 <h2 align="center">Base de données</h2>
