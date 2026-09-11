@@ -6,7 +6,11 @@
 
 Luna est un bot Discord refait en **TypeScript**. Le code source est organisé dans `src/`, compilé vers `dist/`, puis lancé depuis le build généré.
 
-[Lien d'installation Discord](https://discord.com/oauth2/authorize?client_id=1438539563487465532)
+<div align="center">
+    
+[![Installer sur Discord](https://img.shields.io/badge/Installer%20sur%20Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/oauth2/authorize?client_id=1438539563487465532)
+
+</div>
 
 <h2 align="center">Prérequis</h2>
 
